@@ -1,0 +1,280 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F37E88B11B44620C00F74919 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F37E88B01B44620C00F74919 /* main.cpp */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
+		F37E88B81B44623A00F74919 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F37E88B71B44623A00F74919 /* OpenGL.framework */; };
+		F37E88BA1B44623F00F74919 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F37E88B91B44623F00F74919 /* GLUT.framework */; };
+		F37E88BD1B446F9C00F74919 /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F37E88BB1B446F9C00F74919 /* Drawer.cpp */; };
+		F37E88C51B44761A00F74919 /* Point2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F37E88C31B44761A00F74919 /* Point2D.cpp */; };
+		F37E88C81B44777E00F74919 /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F37E88C61B44777E00F74919 /* Line.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F37E88AB1B44620C00F74919 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F37E88AD1B44620C00F74919 /* CGClippingProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CGClippingProject; sourceTree = BUILT_PRODUCTS_DIR; };
+		F37E88B01B44620C00F74919 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F37E88B71B44623A00F74919 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		F37E88B91B44623F00F74919 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		F37E88BB1B446F9C00F74919 /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawer.cpp; sourceTree = "<group>"; };
+		F37E88BC1B446F9C00F74919 /* Drawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawer.h; sourceTree = "<group>"; };
+		F37E88C31B44761A00F74919 /* Point2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Point2D.cpp; sourceTree = "<group>"; };
+		F37E88C61B44777E00F74919 /* Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Line.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F37E88AA1B44620C00F74919 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37E88BA1B44623F00F74919 /* GLUT.framework in Frameworks */,
+				F37E88B81B44623A00F74919 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F37E88A41B44620C00F74919 = {
+			isa = PBXGroup;
+			children = (
+				F37E88B91B44623F00F74919 /* GLUT.framework */,
+				F37E88B71B44623A00F74919 /* OpenGL.framework */,
+				F37E88AF1B44620C00F74919 /* CGClippingProject */,
+				F37E88AE1B44620C00F74919 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F37E88AE1B44620C00F74919 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F37E88AD1B44620C00F74919 /* CGClippingProject */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F37E88AF1B44620C00F74919 /* CGClippingProject */ = {
+			isa = PBXGroup;
+			children = (
+				F37E88B01B44620C00F74919 /* main.cpp */,
+				F37E88BE1B446FAC00F74919 /* Helpers */,
+				F37E88C21B44744000F74919 /* Models */,
+			);
+			path = CGClippingProject;
+			sourceTree = "<group>";
+		};
+		F37E88BE1B446FAC00F74919 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F37E88BB1B446F9C00F74919 /* Drawer.cpp */,
+				F37E88BC1B446F9C00F74919 /* Drawer.h */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		F37E88C21B44744000F74919 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F37E88C31B44761A00F74919 /* Point2D.cpp */,
+				F37E88C61B44777E00F74919 /* Line.cpp */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F37E88AC1B44620C00F74919 /* CGClippingProject */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F37E88B41B44620C00F74919 /* Build configuration list for PBXNativeTarget "CGClippingProject" */;
+			buildPhases = (
+				F37E88A91B44620C00F74919 /* Sources */,
+				F37E88AA1B44620C00F74919 /* Frameworks */,
+				F37E88AB1B44620C00F74919 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CGClippingProject;
+			productName = CGClippingProject;
+			productReference = F37E88AD1B44620C00F74919 /* CGClippingProject */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F37E88A51B44620C00F74919 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Luiz Edgar";
+				TargetAttributes = {
+					F37E88AC1B44620C00F74919 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+				};
+			};
+			buildConfigurationList = F37E88A81B44620C00F74919 /* Build configuration list for PBXProject "CGClippingProject" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F37E88A41B44620C00F74919;
+			productRefGroup = F37E88AE1B44620C00F74919 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F37E88AC1B44620C00F74919 /* CGClippingProject */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F37E88A91B44620C00F74919 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F37E88BD1B446F9C00F74919 /* Drawer.cpp in Sources */,
+				F37E88C81B44777E00F74919 /* Line.cpp in Sources */,
+				F37E88B11B44620C00F74919 /* main.cpp in Sources */,
+				F37E88C51B44761A00F74919 /* Point2D.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F37E88B21B44620C00F74919 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F37E88B31B44620C00F74919 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F37E88B51B44620C00F74919 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F37E88B61B44620C00F74919 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F37E88A81B44620C00F74919 /* Build configuration list for PBXProject "CGClippingProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37E88B21B44620C00F74919 /* Debug */,
+				F37E88B31B44620C00F74919 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F37E88B41B44620C00F74919 /* Build configuration list for PBXNativeTarget "CGClippingProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F37E88B51B44620C00F74919 /* Debug */,
+				F37E88B61B44620C00F74919 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F37E88A51B44620C00F74919 /* Project object */;
+}
