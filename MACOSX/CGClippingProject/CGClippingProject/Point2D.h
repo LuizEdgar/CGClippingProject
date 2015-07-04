@@ -22,7 +22,7 @@ public:
         this->x = -1;
         this->y = -1;
         this->width = 4;
-        this->isSmooth = false;
+        this->isSmooth = true;
         this->color = Color(0.0, 0.0, 0.0, 1.0);
     }
     

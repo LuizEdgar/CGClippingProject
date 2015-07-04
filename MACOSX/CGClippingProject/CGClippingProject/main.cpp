@@ -21,6 +21,8 @@ GLint mouseX,mouseY;
 
 vector<Point2D> points;
 
+vector<Point2D> auxPoints;
+
 Square2D environmentSquare;
 vector<Line2D> environmentLines;
 
@@ -44,9 +46,20 @@ void appendReadyLine(){
     if (points.size() >1) {
         drawer.append(new Line2D(points[0], points[1]));
     }
+    
+    for (int i=0; i < auxPoints.size(); i = i+2) {
+        Line2D *l = new Line2D(auxPoints[i], auxPoints[i+1]);
+        l->setIsDashed(true);
+        l->setWidth(1);
+        drawer.append(l);
+    }
 }
 
 void appendReadyPoints(){
+    for (int i=0; i < auxPoints.size(); i++) {
+        drawer.append(new Point2D(auxPoints[i]));
+    }
+    
     for (int i=0; i < points.size(); i++) {
         drawer.append(new Point2D(points[i]));
     }
@@ -174,83 +187,102 @@ void CohenSutherlandLineClipAndDraw(Point2D a, Point2D b)
     OutCode outcode1 = ComputeOutCode(x1, y1);
     bool accept = false;
     
-    while (true) {
-        if (!(outcode0 | outcode1)) { // Bitwise OR is 0. Trivially accept and get out of loop
-            accept = true;
-            
-            //OPENGL
-            
-            Color green = Color(0, 1 , 0, 1);
-            
-            for (int i=0; i < points.size(); i++) {
-                points[i].setColor(green);
-            }
-            
-            //OPENGL
-            
-            break;
-        } else if (outcode0 & outcode1) { // Bitwise AND is not 0. Trivially reject and get out of loop
-            
-            //OPENGL
-            
-            Color red = Color(1, 0 , 0, 1);
-            
-            for (int i=0; i < points.size(); i++) {
-                points[i].setColor(red);
-            }
-                        
-            //OPENGL
-            
-            break;
-        } else {
-            // failed both tests, so calculate the line segment to clip
-            // from an outside point to an intersection with clip edge
-            double x, y;
-            
-            // At least one endpoint is outside the clip rectangle; pick it.
-            OutCode outcodeOut = outcode0 ? outcode0 : outcode1;
-            
-            // Now find the intersection point;
-            // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
-            if (outcodeOut & TOP) {           // point is above the clip rectangle
-                x = x0 + (x1 - x0) * (yMax - y0) / (y1 - y0);
-                y = yMax;
-            } else if (outcodeOut & BOTTOM) { // point is below the clip rectangle
-                x = x0 + (x1 - x0) * (yMin - y0) / (y1 - y0);
-                y = yMin;
-            } else if (outcodeOut & RIGHT) {  // point is to the right of clip rectangle
-                y = y0 + (y1 - y0) * (xMax - x0) / (x1 - x0);
-                x = xMax;
-            } else if (outcodeOut & LEFT) {   // point is to the left of clip rectangle
-                y = y0 + (y1 - y0) * (xMin - x0) / (x1 - x0);
-                x = xMin;
-            }
-            
-            // Now we move outside point to intersection point to clip
-            // and get ready for next pass.
-            if (outcodeOut == outcode0) {
-                x0 = x;
-                y0 = y;
-                outcode0 = ComputeOutCode(x0, y0);
-            } else {
-                x1 = x;
-                y1 = y;
-                outcode1 = ComputeOutCode(x1, y1);
-            }
+    //    while (true) {
+    if (!(outcode0 | outcode1)) { // Bitwise OR is 0. Trivially accept and get out of loop
+        accept = true;
+        
+        //OPENGL
+        
+        Color green = Color(0, 1 , 0, 1);
+        
+        for (int i=0; i < points.size(); i++) {
+            points[i].setColor(green);
         }
-    }
-    if (accept) {
-        // Following functions are left for implementation by user based on
-        // their platform (OpenGL/graphics.h etc.)
-        //        DrawRectangle(xmin, ymin, xmax, ymax);
-        //        LineSegment(x0, y0, x1, y1);
+        
+        //OPENGL
+        
+        //            break;
+    } else if (outcode0 & outcode1) { // Bitwise AND is not 0. Trivially reject and get out of loop
+        
+        //OPENGL
+        
+        Color red = Color(1, 0 , 0, 1);
+        
+        for (int i=0; i < points.size(); i++) {
+            points[i].setColor(red);
+        }
+        
+        //OPENGL
+        
+        //            break;
+    } else {
+        // failed both tests, so calculate the line segment to clip
+        // from an outside point to an intersection with clip edge
+        double x, y;
+        
+        // At least one endpoint is outside the clip rectangle; pick it.
+        OutCode outcodeOut = outcode0 ? outcode0 : outcode1;
+        
+        // Now find the intersection point;
+        // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
+        if (outcodeOut & TOP) {           // point is above the clip rectangle
+            x = x0 + (x1 - x0) * (yMax - y0) / (y1 - y0);
+            y = yMax;
+        } else if (outcodeOut & BOTTOM) { // point is below the clip rectangle
+            x = x0 + (x1 - x0) * (yMin - y0) / (y1 - y0);
+            y = yMin;
+        } else if (outcodeOut & RIGHT) {  // point is to the right of clip rectangle
+            y = y0 + (y1 - y0) * (xMax - x0) / (x1 - x0);
+            x = xMax;
+        } else if (outcodeOut & LEFT) {   // point is to the left of clip rectangle
+            y = y0 + (y1 - y0) * (xMin - x0) / (x1 - x0);
+            x = xMin;
+        }
+        
+        Color gray = Color(0.8, 0.8, 0.8, 1);
+
+        
+        // Now we move outside point to intersection point to clip
+        // and get ready for next pass.
+        if (outcodeOut == outcode0) {
+            
+            auxPoints.push_back(Point2D(x0, y0, 10, gray));
+            
+            points[0].setX(x);
+            points[0].setY(y);
+            //                x0 = x;
+            //                y0 = y;
+            outcode0 = ComputeOutCode(x0, y0);
+        } else {
+            
+            auxPoints.push_back(Point2D(x1, y1, 10, gray));
+
+            points[1].setX(x);
+            points[1].setY(y);
+            
+            //                x1 = x;
+            //                y1 = y;
+            outcode1 = ComputeOutCode(x1, y1);
+        }
+        
+        auxPoints.push_back(Point2D(x, y));
+        
         
     }
+    //    }
+    //    if (accept) {
+    //        // Following functions are left for implementation by user based on
+    //        // their platform (OpenGL/graphics.h etc.)
+    //        //        DrawRectangle(xmin, ymin, xmax, ymax);
+    //        //        LineSegment(x0, y0, x1, y1);
+    //
+    //    }
 }
 
 void keyboardCallback(unsigned char key, int x, int y){
     if (key == 'r'){
         points.clear();
+        auxPoints.clear();
         glutPostRedisplay();
     }
     
