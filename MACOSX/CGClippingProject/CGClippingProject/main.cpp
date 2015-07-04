@@ -8,8 +8,8 @@
 
 #include "CohenSutherlandStep.cpp"
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 500
+#define WINDOW_WIDTH 1000
+#define WINDOW_HEIGHT 600
 
 using namespace std;
 
@@ -44,7 +44,14 @@ void appendEnvironment(){
 
 void appendReadyLine(){
     if (points.size() >1) {
-        drawer.append(new Line2D(points[0], points[1]));
+        Line2D *l = new Line2D(points[0], points[1]);
+        
+        if (currentStep.isFinished() && currentStep.isRejected()){
+            l->setIsDashed(true);
+            l->setWidth(1);
+        }
+        
+        drawer.append(l);
     }
     
     for (int i=0; i < auxPoints.size(); i = i+2) {
@@ -72,7 +79,7 @@ void drawCallback(void){
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
+    
     appendEnvironment();
     appendReadyLine();
     appendReadyPoints();
@@ -85,13 +92,13 @@ void drawCallback(void){
 void mouseCallback(int button, int state,
                    int x, int y){
     
-    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        cout << "(" << x << ", " << y << ")\n";
-        
+    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {        
         mouseX = x;
         mouseY = y;
         
         if (points.size() < 2) {
+            printf("Ponto setado: (%d,%d)\n", x, y);
+
             Point2D point = Point2D(x, WINDOW_HEIGHT - y);
             point.setIsSmooth(true);
             point.setWidth(10);
@@ -107,6 +114,12 @@ void mouseCallback(int button, int state,
 }
 
 void init(void){
+    printf("Cohen Sutherland Clipping\n");
+    printf("1. Crie dois pontos na tela com o mouse.\n");
+    printf("2. Aperte 'n' para executar uma iteração do algoritmo.\n");
+    printf("Aperte 'r' para recomeçar.\n");
+    
+    
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
@@ -124,21 +137,21 @@ void init(void){
     
     Line2D right = Line2D(Point2D(WINDOW_WIDTH - horizontalPadding, 0), Point2D(WINDOW_WIDTH - horizontalPadding, WINDOW_HEIGHT));
     right.setIsDashed(true);
-        right.setColor(gray);
+    right.setColor(gray);
     right.setWidth(2.0);
     
     environmentLines.push_back(right);
     
     Line2D top = Line2D(Point2D(0, verticalPadding), Point2D(WINDOW_WIDTH, verticalPadding));
     top.setIsDashed(true);
-        top.setColor(gray);
+    top.setColor(gray);
     top.setWidth(2.0);
     
     environmentLines.push_back(top);
     
     Line2D bottom = Line2D(Point2D(0, WINDOW_HEIGHT - verticalPadding), Point2D(WINDOW_WIDTH, WINDOW_HEIGHT - verticalPadding));
     bottom.setIsDashed(true);
-        bottom.setColor(gray);
+    bottom.setColor(gray);
     bottom.setWidth(2.0);
     environmentLines.push_back(bottom);
     
@@ -153,6 +166,8 @@ void init(void){
 
 void keyboardCallback(unsigned char key, int x, int y){
     if (key == 'r'){
+        printf("Resetando algoritmo...\n");
+        
         points.clear();
         auxPoints.clear();
         currentStep = CohenSutherlandStep();
@@ -165,8 +180,12 @@ void keyboardCallback(unsigned char key, int x, int y){
                 currentStep = CohenSutherlandStep(&drawer, &points, &auxPoints, xMin, yMin, xMax, yMax);
             }
             currentStep.next();
+            
+            glutPostRedisplay();
+        }else{
+            printf("Selecione mais um ponto para iniciar o algoritmo.\n");
         }
-        glutPostRedisplay();
+        
     }
     
     if (key == 'q'){

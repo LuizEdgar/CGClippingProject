@@ -39,7 +39,8 @@ class CohenSutherlandStep {
     
     Point2D newLineStart;
     
-    bool finished;
+    bool finished = false;
+    bool rejected = false;
     
     OutCode computeOutCode(double x, double y)
     {
@@ -69,10 +70,13 @@ class CohenSutherlandStep {
             
             //OPENGL
             
-            Color green = Color(0, 1 , 0, 1);
+            Color transparent = Color(0, 0, 0, 0);
+            
+            
+            printf("Reta aceita.\n");
             
             for (int i=0; i < points->size(); i++) {
-                points->at(i).setColor(green);
+                points->at(i).setColor(transparent);
             }
             
             finished = true;
@@ -84,13 +88,16 @@ class CohenSutherlandStep {
             
             //OPENGL
             
-            Color red = Color(1, 0 , 0, 1);
+            Color gray = Color(0.8, 0.8, 0.8, 1);
             
             for (int i=0; i < points->size(); i++) {
-                points->at(i).setColor(red);
+                points->at(i).setColor(gray);
             }
             
+            printf("Reta rejeitada.\n");
+            
             finished = true;
+            rejected = true;
             
             //OPENGL
             
@@ -131,6 +138,8 @@ class CohenSutherlandStep {
             x = xMin;
         }
         
+        printf("Novo ponto calculado: (%lf, %lf)\n",x,y);
+        
         Point2D point = Point2D(x, y);
         point.setColor(Color(1,0,0,1));
         points->push_back(point);
@@ -158,9 +167,10 @@ class CohenSutherlandStep {
             outcode1 = computeOutCode(x1, y1);
         }
         
+        
         points->pop_back();
         
-        auxPoints->push_back(Point2D(x, y));
+        auxPoints->push_back(Point2D(x, y, 10, Color(0,0,0,0)));
         
         step++;
         finished = true;
@@ -220,6 +230,10 @@ public:
     
     bool isFinished(){
         return finished;
+    }
+    
+    bool isRejected(){
+        return rejected;
     }
     //    }
     //    if (accept) {
