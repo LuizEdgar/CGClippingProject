@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>2FDA50CC-5C76-45AF-BCE4-7C643C5436A1</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>CGClippingProject</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>FCCFFA83971F3880C14973D0295C8A6A2C1162A4</key>
 		<string>https://github.com/LuizEdgar/CGClippingProject.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>MACOSX/CGClippingProject/CGClippingProject.xcodeproj/project.xcworkspace</string>
+	<string>MACOSX/CGClippingProject/CGClippingProject.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>FCCFFA83971F3880C14973D0295C8A6A2C1162A4</key>

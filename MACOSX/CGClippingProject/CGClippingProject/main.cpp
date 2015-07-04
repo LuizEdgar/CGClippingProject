@@ -9,7 +9,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
-#include "Line.cpp"
+#include "Line2D.cpp"
 
 #ifdef _WIN32
 //define something for Windows (32-bit and 64-bit, this part is common)
@@ -63,130 +63,48 @@ void drawEnvironment(){
     glVertex3f(WINDOW_WIDTH - horizontalPadding, WINDOW_HEIGHT - verticalPadding, 0.0); // bottom right
     glVertex3f(WINDOW_WIDTH - horizontalPadding, 0 + verticalPadding, 0.0); // top right
     glEnd();
-}
-
-void printLine(Line line){
-    glLineWidth(3);
-    glColor4f(0.0, 1.0, 0.0, 1.0);
     
-    glBegin(GL_LINES);
+    Line2D left = Line2D(Point2D(horizontalPadding, 0), Point2D(horizontalPadding, WINDOW_HEIGHT));
+    left.setIsDashed(true);
+    left.setWidth(2.0);
+    left.draw();
     
-    glVertex2i(line.getStartPoint().getX(), line.getStartPoint().getY());
-    glVertex2i(line.getEndPoint().getX(), line.getEndPoint().getY());
+    Line2D right = Line2D(Point2D(WINDOW_WIDTH - horizontalPadding, 0), Point2D(WINDOW_WIDTH - horizontalPadding, WINDOW_HEIGHT));
+    right.setIsDashed(true);
+    right.setWidth(2.0);
+    right.draw();
     
-    glEnd();
-}
-
-void printPoint(Point2D point){
-    glPointSize(10.0);
-    glColor4f(0.0, 0.0, 1.0, 1.0);
+    Line2D top = Line2D(Point2D(0, verticalPadding), Point2D(WINDOW_WIDTH, verticalPadding));
+    top.setIsDashed(true);
+    top.setWidth(2.0);
+    top.draw();
     
-    glBegin(GL_POINTS);
-    
-    glVertex2i(point.getX(), point.getY());
-    
-    glEnd();
-}
-
-void printCircle(Point2D center, float radius, int num_segments)
-{
-    glEnable(GL_POINT_SMOOTH);
-    glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-    
-    glPointSize(100);
-    glBegin(GL_POINTS);
-    glVertex2i(center.getX(), center.getY());
-    
-    glEnd();
-
-    /// other
-    
-//    
-//    glColor4f(0.0, 0.0, 1.0, 1.0);
-//    
-//    glMatrixMode(GL_MODELVIEW);
-//    glPushMatrix();
-//    glLoadIdentity();
-//    glTranslatef(center.getX(), center.getY(), 0.0f);
-//    static const int circle_points = 100;
-//    static const float angle = 2.0f * 3.1416f / circle_points;
-//    
-//    // this code (mostly) copied from question:
-//    glBegin(GL_POLYGON);
-//    double angle1=0.0;
-//    glVertex2d(radius * cos(0.0) , radius * sin(0.0));
-//    int i;
-//    for (i=0; i<circle_points; i++)
-//    {
-//        glVertex2d(radius * cos(angle1), radius *sin(angle1));
-//        angle1 += angle;
-//    }
-//    glEnd();
-//    glPopMatrix();
-
-///other
-    
-//    //filled circle
-//    float x1,y1,x2,y2;
-//    float angle;
-//    
-//    x1 = center.getY(),y1=center.getY();
-//    glColor3f(0.0,0.0,0.6);
-//    
-//    glBegin(GL_TRIANGLE_FAN);
-//    glVertex2f(x1,y1);
-//    
-//    for(angle=0.0f ; angle<=2*3.14159 ; angle+=0.2)
-//    {
-//        x2 = x1+sin(angle)*radius;
-//        y2 = y1+cos(angle)*radius;
-//        glVertex2f(x2,y2);
-//    }
-//    
-//    glEnd();
-
-}
-
-void testSpin(){
-    glPushMatrix();
-    
-    //update spin
-    spin += 1;
-    if (spin > 100)
-        spin = 0;
-    // rotate
-    
-    int verticalPadding = 150;
-    int horizontalPadding = 250;
-    
-    glBegin(GL_QUADS);
-    glVertex3f(0 + horizontalPadding, 0 + verticalPadding, 0.0); // top left
-    glVertex3f(0 + horizontalPadding, WINDOW_HEIGHT - verticalPadding, 0.0); // bottom left
-    glVertex3f(WINDOW_WIDTH - horizontalPadding, WINDOW_HEIGHT - verticalPadding, 0.0); // bottom right
-    glVertex3f(WINDOW_WIDTH - horizontalPadding, 0 + verticalPadding, 0.0); // top right
-    
-    glEnd();
-    glPopMatrix();
-    
+    Line2D bottom = Line2D(Point2D(0, WINDOW_HEIGHT - verticalPadding), Point2D(WINDOW_WIDTH, WINDOW_HEIGHT - verticalPadding));
+    bottom.setIsDashed(true);
+    bottom.setWidth(2.0);
+    bottom.draw();    
 }
 
 void drawReadyPoints(){
     if (counter >= 0) {
         cout << "p0(" << points[0].getX() << ", " << points[0].getY() << ")\n";
 //        printPoint(points[0]);
-        printCircle(points[0], 10, 20);
+        points[0].setIsSmooth(true);
+        points[0].setWidth(10);
+        points[0].draw();
     }
 
     if (counter > 0) {
         cout << "p1(" << points[1].getX() << ", " << points[1].getY() << ")\n";
-//        printPoint(points[1]);
-        printCircle(points[1], 10, 20);
+        points[1].setIsSmooth(true);
+        points[1].setWidth(10);
+        points[1].draw();
     }
 }
 
 void drawReadyLine(){
     if (counter > 0) {
-        printLine(Line(points[0], points[1]));
+        Line2D(points[0], points[1]).draw();
     }
 }
 
@@ -200,8 +118,6 @@ void drawCallback(void){
     drawReadyLine();
     drawReadyPoints();
     drawEnvironment();
-    
-//    testSpin();
     
     glSwapAPPLE();
 }

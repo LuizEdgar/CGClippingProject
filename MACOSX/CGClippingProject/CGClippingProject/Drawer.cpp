@@ -6,4 +6,7 @@
 //  Copyright (c) 2015 Luiz Edgar. All rights reserved.
 //
 
-#include "Drawer.h"
+class Drawer {
+public:
+    virtual void draw();
+};
