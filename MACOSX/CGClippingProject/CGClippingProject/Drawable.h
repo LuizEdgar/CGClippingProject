@@ -46,8 +46,13 @@
 using namespace std;
 
 class Drawable {
+    
 public:
+    Color color;
+    
     virtual void draw();
+    void setColor(Color color);
+    Color getColor();
 };
 
 #endif

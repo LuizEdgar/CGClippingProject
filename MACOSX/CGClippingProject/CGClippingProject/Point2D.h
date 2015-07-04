@@ -16,7 +16,6 @@ class Point2D : public Drawable{
     float y;
     float width;
     bool isSmooth;
-    Color color;
     
 public:
     Point2D(){

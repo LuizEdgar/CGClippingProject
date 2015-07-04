@@ -9,3 +9,11 @@
 #include "Drawable.h"
 
 void Drawable::draw(){}
+
+void Drawable::setColor(Color color){
+    this->color = color;
+};
+
+Color Drawable::getColor(){
+    return color;
+}

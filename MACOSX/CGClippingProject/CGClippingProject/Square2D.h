@@ -15,8 +15,6 @@ class Square2D : public Drawable{
     Point2D start;
     Point2D end;
     
-    Color color;
-    
 public:
     Square2D(){
         this->start = Point2D();
