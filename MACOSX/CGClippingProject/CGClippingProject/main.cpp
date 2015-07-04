@@ -6,36 +6,9 @@
 //  Copyright (c) 2015 Luiz Edgar. All rights reserved.
 //
 
-#include <iostream>
-#include <stdlib.h>
-#include <math.h>
-#include "Line2D.cpp"
-
-#ifdef _WIN32
-//define something for Windows (32-bit and 64-bit, this part is common)
-#ifdef _WIN64
-//define something for Windows (64-bit only)
-#endif
-#elif __APPLE__
-#include "TargetConditionals.h"
-#if TARGET_IPHONE_SIMULATOR
-// iOS Simulator
-#elif TARGET_OS_IPHONE
-// iOS device
-#elif TARGET_OS_MAC
-
-#include <GLUT/glut.h>
-
-#else
-// Unsupported platform
-#endif
-#elif __linux
-// linux
-#elif __unix // all unices not caught above
-// Unix
-#elif __posix
-// POSIX
-#endif
+#include "Square2D.h"
+#include "Line2D.h"
+#include "Drawer.cpp"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 500
@@ -46,97 +19,72 @@ bool environmentInitialized;
 
 GLint mouseX,mouseY;
 
-Point2D points[2];
-int counter;
+vector<Point2D> points;
 
-int spin;
+Square2D environmentSquare;
+vector<Line2D> environmentLines;
 
-void drawEnvironment(){
-    glColor4f(1.0, 0, 0, 0.5);
+float xMin;
+float yMin;
+float xMax;
+float yMax;
+
+Drawer drawer;
+
+void appendEnvironment(){
+    drawer.append(new Square2D(environmentSquare));
     
-    int verticalPadding = 150;
-    int horizontalPadding = 250;
+    for (int i=0; i < environmentLines.size(); i++) {
+        drawer.append(new Line2D(environmentLines[i]));
+    }
     
-    glBegin(GL_QUADS);
-    glVertex3f(0 + horizontalPadding, 0 + verticalPadding, 0.0); // top left
-    glVertex3f(0 + horizontalPadding, WINDOW_HEIGHT - verticalPadding, 0.0); // bottom left
-    glVertex3f(WINDOW_WIDTH - horizontalPadding, WINDOW_HEIGHT - verticalPadding, 0.0); // bottom right
-    glVertex3f(WINDOW_WIDTH - horizontalPadding, 0 + verticalPadding, 0.0); // top right
-    glEnd();
-    
-    Line2D left = Line2D(Point2D(horizontalPadding, 0), Point2D(horizontalPadding, WINDOW_HEIGHT));
-    left.setIsDashed(true);
-    left.setWidth(2.0);
-    left.draw();
-    
-    Line2D right = Line2D(Point2D(WINDOW_WIDTH - horizontalPadding, 0), Point2D(WINDOW_WIDTH - horizontalPadding, WINDOW_HEIGHT));
-    right.setIsDashed(true);
-    right.setWidth(2.0);
-    right.draw();
-    
-    Line2D top = Line2D(Point2D(0, verticalPadding), Point2D(WINDOW_WIDTH, verticalPadding));
-    top.setIsDashed(true);
-    top.setWidth(2.0);
-    top.draw();
-    
-    Line2D bottom = Line2D(Point2D(0, WINDOW_HEIGHT - verticalPadding), Point2D(WINDOW_WIDTH, WINDOW_HEIGHT - verticalPadding));
-    bottom.setIsDashed(true);
-    bottom.setWidth(2.0);
-    bottom.draw();    
 }
 
-void drawReadyPoints(){
-    if (counter >= 0) {
-        cout << "p0(" << points[0].getX() << ", " << points[0].getY() << ")\n";
-//        printPoint(points[0]);
-        points[0].setIsSmooth(true);
-        points[0].setWidth(10);
-        points[0].draw();
-    }
-
-    if (counter > 0) {
-        cout << "p1(" << points[1].getX() << ", " << points[1].getY() << ")\n";
-        points[1].setIsSmooth(true);
-        points[1].setWidth(10);
-        points[1].draw();
+void appendReadyLine(){
+    if (points.size() >1) {
+        drawer.append(new Line2D(points[0], points[1]));
     }
 }
 
-void drawReadyLine(){
-    if (counter > 0) {
-        Line2D(points[0], points[1]).draw();
+void appendReadyPoints(){
+    for (int i=0; i < points.size(); i++) {
+        drawer.append(new Point2D(points[i]));
     }
 }
+
 
 void drawCallback(void){
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW); 
     glLoadIdentity();
     
-    drawReadyLine();
-    drawReadyPoints();
-    drawEnvironment();
+    appendReadyLine();
+    appendReadyPoints();
+    appendEnvironment();
+    
+    drawer.frame();
     
     glSwapAPPLE();
 }
 
 void mouseCallback(int button, int state,
                    int x, int y){
-
+    
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         cout << "(" << x << ", " << y << ")\n";
         
         mouseX = x;
         mouseY = y;
         
-        if (counter < 2) {
-            points[++counter] = Point2D(x, y);
+        if (points.size() < 2) {
+            Point2D point = Point2D(x, WINDOW_HEIGHT - y);
+            point.setIsSmooth(true);
+            point.setWidth(10);
+            point.draw();
             
-            if (counter == 1) {
-                counter++;
-            }
+            points.push_back(point);
             
             glutPostRedisplay();
         }
@@ -149,12 +97,43 @@ void init(void){
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    counter = -1;
+    int verticalPadding = 150;
+    int horizontalPadding = 250;
+    
+    Line2D left = Line2D(Point2D(horizontalPadding, 0), Point2D(horizontalPadding, WINDOW_HEIGHT));
+    left.setIsDashed(true);
+    left.setWidth(2.0);
+    
+    environmentLines.push_back(left);
+    
+    Line2D right = Line2D(Point2D(WINDOW_WIDTH - horizontalPadding, 0), Point2D(WINDOW_WIDTH - horizontalPadding, WINDOW_HEIGHT));
+    right.setIsDashed(true);
+    right.setWidth(2.0);
+    
+    environmentLines.push_back(right);
+    
+    Line2D top = Line2D(Point2D(0, verticalPadding), Point2D(WINDOW_WIDTH, verticalPadding));
+    top.setIsDashed(true);
+    top.setWidth(2.0);
+    
+    environmentLines.push_back(top);
+    
+    Line2D bottom = Line2D(Point2D(0, WINDOW_HEIGHT - verticalPadding), Point2D(WINDOW_WIDTH, WINDOW_HEIGHT - verticalPadding));
+    bottom.setIsDashed(true);
+    bottom.setWidth(2.0);
+    environmentLines.push_back(bottom);
+    
+    xMin = 0 + horizontalPadding;
+    yMin = 0 + verticalPadding;
+    xMax = WINDOW_WIDTH - horizontalPadding;
+    yMax = WINDOW_HEIGHT - verticalPadding;
+    
+    environmentSquare = Square2D(Point2D(xMin, yMin), Point2D(xMax, yMax), Color(1, 0 ,0, 0.5));
 }
 
 void keyboardCallback(unsigned char key, int x, int y){
     if (key == 'r'){
-        counter = -1;
+        points.clear();
         glutPostRedisplay();
     }
     
@@ -173,21 +152,12 @@ void resizeWindowCallback(GLsizei w, GLsizei h){
     
     glMatrixMode(GL_PROJECTION);
     
-    gluOrtho2D(0, (GLdouble)w,  (GLdouble)h, 0);
-    
-    
-    //    if (h == 0) h = 1;
-    
-    //    if (w <= h)
-    //        gluOrtho2D (0.0f, 250.0, 0.0f, 250.0f*h/w);
-    //    else
-    //        gluOrtho2D (0.0f, 250.0f*h/w, 0.0f, 250.0f);
-    
-    ////    gluOrtho2D(-1, 1, -1, 1);
-    
+    gluOrtho2D(0, (GLdouble)w,  0, (GLdouble)h);
 }
 
 int main( int argc, char** argv){
+    drawer = Drawer();
+    
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -204,12 +174,3 @@ int main( int argc, char** argv){
     init();
     glutMainLoop();
 }
-//
-//
-//#include <iostream>
-//
-//int main(int argc, const char * argv[]) {
-//    // insert code here...
-//    std::cout << "Hello, World!\n";
-//    return 0;
-//}

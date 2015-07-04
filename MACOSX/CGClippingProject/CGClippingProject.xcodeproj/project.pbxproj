@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F30E7AF21B4630DC0062A981 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F30E7AF11B4630DC0062A981 /* Color.cpp */; };
 		F30E7AF41B4637510062A981 /* Line2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F30E7AF31B4637510062A981 /* Line2D.cpp */; };
+		F33864121B48161A00B8028B /* Square2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F33864111B48161A00B8028B /* Square2D.cpp */; };
 		F37E88B11B44620C00F74919 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F37E88B01B44620C00F74919 /* main.cpp */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
 		F37E88B81B44623A00F74919 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F37E88B71B44623A00F74919 /* OpenGL.framework */; };
 		F37E88BA1B44623F00F74919 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F37E88B91B44623F00F74919 /* GLUT.framework */; };
@@ -32,6 +33,12 @@
 /* Begin PBXFileReference section */
 		F30E7AF11B4630DC0062A981 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
 		F30E7AF31B4637510062A981 /* Line2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Line2D.cpp; sourceTree = "<group>"; };
+		F33864111B48161A00B8028B /* Square2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Square2D.cpp; sourceTree = "<group>"; };
+		F33864131B4819CE00B8028B /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		F33864141B481C6600B8028B /* Line2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Line2D.h; sourceTree = "<group>"; };
+		F33864151B481DB800B8028B /* Point2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Point2D.h; sourceTree = "<group>"; };
+		F33864161B481E7000B8028B /* Drawable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
+		F33864171B481F2E00B8028B /* Square2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Square2D.h; sourceTree = "<group>"; };
 		F37E88AD1B44620C00F74919 /* CGClippingProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CGClippingProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		F37E88B01B44620C00F74919 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		F37E88B71B44623A00F74919 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -94,8 +101,14 @@
 			isa = PBXGroup;
 			children = (
 				F3A917301B455F7D00AE2190 /* Drawable.cpp */,
+				F33864161B481E7000B8028B /* Drawable.h */,
+				F33864111B48161A00B8028B /* Square2D.cpp */,
+				F33864171B481F2E00B8028B /* Square2D.h */,
 				F37E88C31B44761A00F74919 /* Point2D.cpp */,
+				F33864151B481DB800B8028B /* Point2D.h */,
 				F30E7AF31B4637510062A981 /* Line2D.cpp */,
+				F33864141B481C6600B8028B /* Line2D.h */,
+				F33864131B4819CE00B8028B /* Color.h */,
 				F30E7AF11B4630DC0062A981 /* Color.cpp */,
 			);
 			name = Models;
@@ -157,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F33864121B48161A00B8028B /* Square2D.cpp in Sources */,
 				F37E88BD1B446F9C00F74919 /* Drawer.cpp in Sources */,
 				F30E7AF21B4630DC0062A981 /* Color.cpp in Sources */,
 				F30E7AF41B4637510062A981 /* Line2D.cpp in Sources */,
