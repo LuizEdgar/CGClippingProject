@@ -21,7 +21,7 @@ public:
     Point2D(){
         this->x = -1;
         this->y = -1;
-        this->width = 4;
+        this->width = 10;
         this->isSmooth = true;
         this->color = Color(0.0, 0.0, 0.0, 1.0);
     }

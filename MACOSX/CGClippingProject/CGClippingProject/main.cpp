@@ -6,9 +6,7 @@
 //  Copyright (c) 2015 Luiz Edgar. All rights reserved.
 //
 
-#include "Square2D.h"
-#include "Line2D.h"
-#include "Drawer.cpp"
+#include "CohenSutherlandStep.cpp"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 500
@@ -32,6 +30,8 @@ float xMax;
 float yMax;
 
 Drawer drawer;
+
+CohenSutherlandStep currentStep;
 
 void appendEnvironment(){
     drawer.append(new Square2D(environmentSquare));
@@ -72,10 +72,10 @@ void drawCallback(void){
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
+
+    appendEnvironment();
     appendReadyLine();
     appendReadyPoints();
-    appendEnvironment();
     
     drawer.frame();
     
@@ -113,26 +113,32 @@ void init(void){
     int verticalPadding = 150;
     int horizontalPadding = 250;
     
+    Color gray = Color(0.05, 0.55, 0.85, 1);
+    
     Line2D left = Line2D(Point2D(horizontalPadding, 0), Point2D(horizontalPadding, WINDOW_HEIGHT));
     left.setIsDashed(true);
+    left.setColor(gray);
     left.setWidth(2.0);
     
     environmentLines.push_back(left);
     
     Line2D right = Line2D(Point2D(WINDOW_WIDTH - horizontalPadding, 0), Point2D(WINDOW_WIDTH - horizontalPadding, WINDOW_HEIGHT));
     right.setIsDashed(true);
+        right.setColor(gray);
     right.setWidth(2.0);
     
     environmentLines.push_back(right);
     
     Line2D top = Line2D(Point2D(0, verticalPadding), Point2D(WINDOW_WIDTH, verticalPadding));
     top.setIsDashed(true);
+        top.setColor(gray);
     top.setWidth(2.0);
     
     environmentLines.push_back(top);
     
     Line2D bottom = Line2D(Point2D(0, WINDOW_HEIGHT - verticalPadding), Point2D(WINDOW_WIDTH, WINDOW_HEIGHT - verticalPadding));
     bottom.setIsDashed(true);
+        bottom.setColor(gray);
     bottom.setWidth(2.0);
     environmentLines.push_back(bottom);
     
@@ -141,154 +147,24 @@ void init(void){
     xMax = WINDOW_WIDTH - horizontalPadding;
     yMax = WINDOW_HEIGHT - verticalPadding;
     
-    environmentSquare = Square2D(Point2D(xMin, yMin), Point2D(xMax, yMax), Color(1, 0 ,0, 0.5));
+    environmentSquare = Square2D(Point2D(xMin, yMin), Point2D(xMax, yMax), Color(0.92, 0.37 , 0.37, 0.4));
 }
 
-typedef int OutCode;
-
-const int INSIDE = 0; // 0000
-const int LEFT = 1;   // 0001
-const int RIGHT = 2;  // 0010
-const int BOTTOM = 4; // 0100
-const int TOP = 8;    // 1000
-
-// Compute the bit code for a point (x, y) using the clip rectangle
-// bounded diagonally by (xmin, ymin), and (xmax, ymax)
-
-// ASSUME THAT xmax, xmin, ymax and ymin are global constants.
-
-OutCode ComputeOutCode(double x, double y)
-{
-    OutCode code;
-    
-    code = INSIDE;          // initialised as being inside of clip window
-    
-    if (x < xMin)           // to the left of clip window
-        code |= LEFT;
-    else if (x > xMax)      // to the right of clip window
-        code |= RIGHT;
-    if (y < yMin)           // below the clip window
-        code |= BOTTOM;
-    else if (y > yMax)      // above the clip window
-        code |= TOP;
-    
-    return code;
-}
-
-// Cohen–Sutherland clipping algorithm clips a line from
-// P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with
-// diagonal from (xmin, ymin) to (xmax, ymax).
-void CohenSutherlandLineClipAndDraw(Point2D a, Point2D b)
-{
-    double x0 = a.getX(), y0 = a.getY(), x1 = b.getX(), y1 = b.getY();
-    
-    // compute outcodes for P0, P1, and whatever point lies outside the clip rectangle
-    OutCode outcode0 = ComputeOutCode(x0, y0);
-    OutCode outcode1 = ComputeOutCode(x1, y1);
-    bool accept = false;
-    
-    //    while (true) {
-    if (!(outcode0 | outcode1)) { // Bitwise OR is 0. Trivially accept and get out of loop
-        accept = true;
-        
-        //OPENGL
-        
-        Color green = Color(0, 1 , 0, 1);
-        
-        for (int i=0; i < points.size(); i++) {
-            points[i].setColor(green);
-        }
-        
-        //OPENGL
-        
-        //            break;
-    } else if (outcode0 & outcode1) { // Bitwise AND is not 0. Trivially reject and get out of loop
-        
-        //OPENGL
-        
-        Color red = Color(1, 0 , 0, 1);
-        
-        for (int i=0; i < points.size(); i++) {
-            points[i].setColor(red);
-        }
-        
-        //OPENGL
-        
-        //            break;
-    } else {
-        // failed both tests, so calculate the line segment to clip
-        // from an outside point to an intersection with clip edge
-        double x, y;
-        
-        // At least one endpoint is outside the clip rectangle; pick it.
-        OutCode outcodeOut = outcode0 ? outcode0 : outcode1;
-        
-        // Now find the intersection point;
-        // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
-        if (outcodeOut & TOP) {           // point is above the clip rectangle
-            x = x0 + (x1 - x0) * (yMax - y0) / (y1 - y0);
-            y = yMax;
-        } else if (outcodeOut & BOTTOM) { // point is below the clip rectangle
-            x = x0 + (x1 - x0) * (yMin - y0) / (y1 - y0);
-            y = yMin;
-        } else if (outcodeOut & RIGHT) {  // point is to the right of clip rectangle
-            y = y0 + (y1 - y0) * (xMax - x0) / (x1 - x0);
-            x = xMax;
-        } else if (outcodeOut & LEFT) {   // point is to the left of clip rectangle
-            y = y0 + (y1 - y0) * (xMin - x0) / (x1 - x0);
-            x = xMin;
-        }
-        
-        Color gray = Color(0.8, 0.8, 0.8, 1);
-
-        
-        // Now we move outside point to intersection point to clip
-        // and get ready for next pass.
-        if (outcodeOut == outcode0) {
-            
-            auxPoints.push_back(Point2D(x0, y0, 10, gray));
-            
-            points[0].setX(x);
-            points[0].setY(y);
-            //                x0 = x;
-            //                y0 = y;
-            outcode0 = ComputeOutCode(x0, y0);
-        } else {
-            
-            auxPoints.push_back(Point2D(x1, y1, 10, gray));
-
-            points[1].setX(x);
-            points[1].setY(y);
-            
-            //                x1 = x;
-            //                y1 = y;
-            outcode1 = ComputeOutCode(x1, y1);
-        }
-        
-        auxPoints.push_back(Point2D(x, y));
-        
-        
-    }
-    //    }
-    //    if (accept) {
-    //        // Following functions are left for implementation by user based on
-    //        // their platform (OpenGL/graphics.h etc.)
-    //        //        DrawRectangle(xmin, ymin, xmax, ymax);
-    //        //        LineSegment(x0, y0, x1, y1);
-    //
-    //    }
-}
 
 void keyboardCallback(unsigned char key, int x, int y){
     if (key == 'r'){
         points.clear();
         auxPoints.clear();
+        currentStep = CohenSutherlandStep();
         glutPostRedisplay();
     }
     
     if (key == 'n'){
         if (points.size() > 1) {
-            CohenSutherlandLineClipAndDraw(points[0], points[1]);
+            if (currentStep.isFinished()) {
+                currentStep = CohenSutherlandStep(&drawer, &points, &auxPoints, xMin, yMin, xMax, yMax);
+            }
+            currentStep.next();
         }
         glutPostRedisplay();
     }

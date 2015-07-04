@@ -16,6 +16,7 @@
 		F37E88BD1B446F9C00F74919 /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F37E88BB1B446F9C00F74919 /* Drawer.cpp */; };
 		F37E88C51B44761A00F74919 /* Point2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F37E88C31B44761A00F74919 /* Point2D.cpp */; };
 		F3A917311B455F7D00AE2190 /* Drawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3A917301B455F7D00AE2190 /* Drawable.cpp */; };
+		F3C0A3B51B48413200527261 /* CohenSutherlandStep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3C0A3B41B48413200527261 /* CohenSutherlandStep.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +47,7 @@
 		F37E88BB1B446F9C00F74919 /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawer.cpp; sourceTree = "<group>"; };
 		F37E88C31B44761A00F74919 /* Point2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Point2D.cpp; sourceTree = "<group>"; };
 		F3A917301B455F7D00AE2190 /* Drawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawable.cpp; sourceTree = "<group>"; };
+		F3C0A3B41B48413200527261 /* CohenSutherlandStep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CohenSutherlandStep.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				F37E88BB1B446F9C00F74919 /* Drawer.cpp */,
+				F3C0A3B41B48413200527261 /* CohenSutherlandStep.cpp */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -173,6 +176,7 @@
 				F33864121B48161A00B8028B /* Square2D.cpp in Sources */,
 				F37E88BD1B446F9C00F74919 /* Drawer.cpp in Sources */,
 				F30E7AF21B4630DC0062A981 /* Color.cpp in Sources */,
+				F3C0A3B51B48413200527261 /* CohenSutherlandStep.cpp in Sources */,
 				F30E7AF41B4637510062A981 /* Line2D.cpp in Sources */,
 				F3A917311B455F7D00AE2190 /* Drawable.cpp in Sources */,
 				F37E88B11B44620C00F74919 /* main.cpp in Sources */,
