@@ -42,6 +42,14 @@ void appendEnvironment(){
     
 }
 
+void printString(string s, Point2D point){
+    glColor3d(0.0, 0.0, 0.0);
+    glRasterPos2f(point.getX()+5, point.getY()+5);
+    for (int i = 0; i < s.length(); i++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s[i]);
+    }
+}
+
 void appendReadyLine(){
     if (points.size() >1) {
         Line2D *l = new Line2D(points[0], points[1]);
@@ -65,6 +73,8 @@ void appendReadyLine(){
 void appendReadyPoints(){
     for (int i=0; i < auxPoints.size(); i++) {
         drawer.append(new Point2D(auxPoints[i]));
+        string t = "t"+to_string(i);
+        printString(t, auxPoints[i]);
     }
     
     for (int i=0; i < points.size(); i++) {

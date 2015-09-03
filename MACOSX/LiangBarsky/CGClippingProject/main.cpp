@@ -74,9 +74,7 @@ void appendReadyPoints(){
     for (int i=0; i < auxPoints.size(); i++) {
         drawer.append(new Point2D(auxPoints[i]));
         string t = "t"+to_string(i);
-//        t += to_string(i);
         printString(t, auxPoints[i]);
-
     }
     
     for (int i=0; i < points.size(); i++) {
