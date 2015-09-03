@@ -54,24 +54,35 @@ void appendReadyLine(){
         drawer.append(l);
     }
     
-    for (int i=0; i < auxPoints.size(); i = i+2) {
-        Line2D *l = new Line2D(auxPoints[i], auxPoints[i+1]);
-        l->setIsDashed(true);
-        l->setWidth(1);
-        drawer.append(l);
+//    for (int i=0; i < auxPoints.size(); i = i+2) {
+//        Line2D *l = new Line2D(auxPoints[i], auxPoints[i+1]);
+//        l->setIsDashed(true);
+//        l->setWidth(1);
+//        drawer.append(l);
+//    }
+}
+
+void printString(string s, Point2D point){
+    glColor3d(0.0, 0.0, 0.0);
+    glRasterPos2f(point.getX()+5, point.getY()+5);
+    for (int i = 0; i < s.length(); i++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s[i]);
     }
 }
 
 void appendReadyPoints(){
     for (int i=0; i < auxPoints.size(); i++) {
         drawer.append(new Point2D(auxPoints[i]));
+        string t = "t"+to_string(i);
+//        t += to_string(i);
+        printString(t, auxPoints[i]);
+
     }
     
     for (int i=0; i < points.size(); i++) {
         drawer.append(new Point2D(points[i]));
     }
 }
-
 
 void drawCallback(void){
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -174,13 +185,21 @@ void keyboardCallback(unsigned char key, int x, int y){
         points.clear();
         auxPoints.clear();
         currentStep = LiangBarksy();
+        
+        Color lineColor = Color(0.05, 0.55, 0.85, 1);
+        
+        for (int i = 0; i < environmentLines.size(); i++) {
+            environmentLines[i].setColor(lineColor);
+            environmentLines[i].setIsDashed(true);
+        }
+
         glutPostRedisplay();
     }
     
     if (key == 'n'){
         if (points.size() > 1) {
-            if (currentStep.isFinished()) {
-                currentStep = LiangBarksy(&drawer, &points, &auxPoints, xMin, yMin, xMax, yMax);
+            if (!currentStep.isInitialized()) {
+                currentStep = LiangBarksy(&drawer, &environmentLines, &points, &auxPoints, xMin, yMin, xMax, yMax);
             }
             currentStep.next();
             

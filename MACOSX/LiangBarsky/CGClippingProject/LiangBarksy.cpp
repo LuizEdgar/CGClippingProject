@@ -15,6 +15,8 @@ class LiangBarksy {
     
     vector<Point2D> *points;
     vector<Point2D> *auxPoints;
+    vector<Line2D> *environmentLines;
+
     
     float xMax, yMax, xMin, yMin;
     float x0, y0, x1, y1;
@@ -26,12 +28,17 @@ class LiangBarksy {
     
     bool finished, rejected;
     
+    int edge;
+    int currentStep;
+    int initialized;
+    
 public:
     
-    LiangBarksy(Drawer *drawer, vector<Point2D> *points, vector<Point2D> *auxPoints, double xMin, double yMin, double xMax, double yMax){
+    LiangBarksy(Drawer *drawer, vector<Line2D> *environmentLines, vector<Point2D> *points, vector<Point2D> *auxPoints, double xMin, double yMin, double xMax, double yMax){
         this->drawer = drawer;
         this->points = points;
         this->auxPoints = auxPoints;
+        this->environmentLines = environmentLines;
         
         this->xMin = xMin;
         this->yMin = yMin;
@@ -52,79 +59,133 @@ public:
         xDelta = x1 - x0;
         yDelta = y1 - y0;
         
-        finished = true;
+        finished = false;
         rejected = false;
+        initialized = true;
+        
+        edge = 0;
+        currentStep = 0;
     }
     
     LiangBarksy(){
-        finished = true;
+        finished = false;
         rejected = false;
+        initialized = false;
     }
     
     void next(){
-        int edge;
-        
-        for (edge = 0; edge<4 ; edge++){
-           
-            if(edge == 0){ //LEFT
-                p = -xDelta;
-                q = -(xMin - x0);
-            }
-            if(edge == 1){ //RIGHT
-                p = xDelta;
-                q = (xMax - x0);
-            }
-            if(edge == 2){ //BOTTOM
-                p = -yDelta;
-                q = -(yMin - y0);
-            }
-            if(edge == 3){ //TOP
-                p = yDelta;
-                q = (yMax - y0);
-            }
-            r = q/p;
-            
-            if (p == 0 && q < 0) {
-                printf("Linha paralela.\n");
-
-                rejected = true;
-                finished = true;
-                return;
-            }
-            
-            if (p < 0){
-                if(r > t1){
-                    rejected = true;
+        switch (currentStep) {
+            case 0:
+                if (edge < 4 && !rejected) {
+                    stepEdge();
+                }else{
                     finished = true;
-                    return;
-
-                }else if (r > t0){
-                    printf("p < 0 -> Atualizando t0 = %lf para %lf pelo edge = %d.\n", t0, r, edge);
-                    t0 = r;
+                    markEnd();
                 }
-            }else if (p > 0){
-                if (r < t0) {
-                    rejected = true;
-                    finished = true;
-                    return;
-
-                }else if (r < t1){
-                    printf("p > 0 -> Atualizando t1 = %lf para %lf pelo edge = %d.\n", t1, r, edge);
-                    t1 = r;
-                }
-            }
-            
+                break;
+            case 1:
+                
+                break;
+            case 2:
+                
+                break;
+            default:
+                break;
         }
-        
-        finished = true;
-        
+    }
+    
+    void markEnd(){
+        Color lineColor = Color(0.05, 0.55, 0.85, 1);
+
+        for (int i = 0; i < environmentLines->size(); i++) {
+            environmentLines->at(i).setColor(lineColor);
+            environmentLines->at(i).setIsDashed(true);
+        }
+
         if (!rejected) {
+            printf("Fim, temos nova reta.\n");
+
             points->at(0).setX(x0 + t0*xDelta);
             points->at(0).setY(y0 + t0*yDelta);
             points->at(1).setX(x0 + t1*xDelta);
             points->at(1).setY(y0 + t1*yDelta);
+        }else{
+            printf("Fim, tudo rejeitado.\n");
         }
         
+        currentStep++;
+    }
+    
+    void stepEdge(){
+        
+        Color blue = Color(0.5, 0.4, 0.9, 1);
+        Color gray = Color(0.8, 0.8, 0.8, 1);
+        Color red = Color(1.0, 0.4, 0.4, 1);
+        Color lineColor = Color(0.05, 0.55, 0.85, 1);
+
+        
+        for (int i = 0; i < environmentLines->size(); i++) {
+            environmentLines->at(i).setColor(lineColor);
+            environmentLines->at(i).setIsDashed(true);
+        }
+        
+        environmentLines->at(edge).setColor(red);
+        environmentLines->at(edge).setIsDashed(false);
+        
+        if(edge == 0){ //LEFT
+            p = -xDelta;
+            q = -(xMin - x0);
+        }
+        if(edge == 1){ //RIGHT
+            p = xDelta;
+            q = (xMax - x0);
+        }
+        if(edge == 2){ //BOTTOM
+            p = -yDelta;
+            q = -(yMin - y0);
+        }
+        if(edge == 3){ //TOP
+            p = yDelta;
+            q = (yMax - y0);
+        }
+        r = q/p;
+        
+        if (p == 0 && q < 0) {
+            printf("Linha paralela.\n");
+            
+            rejected = true;
+            return;
+        }
+        
+        
+
+        if (p < 0){
+            if(r > t1){
+                rejected = true;
+                return;
+                
+            }else if (r > t0){
+                printf("p < 0 -> Atualizando t0 = %lf para %lf pelo edge = %d.\n", t0, r, edge);
+                auxPoints->push_back(Point2D(x0 + r*xDelta, y0 + r*yDelta, 10, blue));
+                t0 = r;
+            }else{
+                auxPoints->push_back(Point2D(x0 + r*xDelta, y0 + r*yDelta, 10, gray));
+            }
+        }else if (p > 0){
+            if (r < t0) {
+                rejected = true;
+                return;
+                
+            }else if (r < t1){
+                printf("p > 0 -> Atualizando t1 = %lf para %lf pelo edge = %d.\n", t1, r, edge);
+                auxPoints->push_back(Point2D(x0 + r*xDelta, y0 + r*yDelta, 10, blue));
+                t1 = r;
+            }else{
+                auxPoints->push_back(Point2D(x0 + r*xDelta, y0 + r*yDelta, 10, gray));
+            }
+        }
+        
+        edge++;
     }
     
     bool isFinished(){
@@ -134,5 +195,10 @@ public:
     bool isRejected(){
         return rejected;
     }
+    
+    bool isInitialized(){
+        return initialized;
+    }
+
     
 };
