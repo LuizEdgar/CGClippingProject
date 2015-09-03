@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Luiz Edgar. All rights reserved.
 //
 
-#include "CohenSutherlandStep.cpp"
+#include "LiangBarksy.cpp"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 500
@@ -31,7 +31,7 @@ float yMax;
 
 Drawer drawer;
 
-CohenSutherlandStep currentStep;
+LiangBarksy currentStep;
 
 void appendEnvironment(){
     drawer.append(new Square2D(environmentSquare));
@@ -92,6 +92,8 @@ void drawCallback(void){
 void mouseCallback(int button, int state,
                    int x, int y){
     
+    y = WINDOW_HEIGHT - y;
+    
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         
         mouseX = x;
@@ -100,7 +102,7 @@ void mouseCallback(int button, int state,
         if (points.size() < 2) {
             printf("Ponto setado: (%d,%d)\n", x, y);
 
-            Point2D point = Point2D(x, WINDOW_HEIGHT - y);
+            Point2D point = Point2D(x, y);
             point.setIsSmooth(true);
             point.setWidth(10);
             point.draw();
@@ -171,14 +173,14 @@ void keyboardCallback(unsigned char key, int x, int y){
         
         points.clear();
         auxPoints.clear();
-        currentStep = CohenSutherlandStep();
+        currentStep = LiangBarksy();
         glutPostRedisplay();
     }
     
     if (key == 'n'){
         if (points.size() > 1) {
             if (currentStep.isFinished()) {
-                currentStep = CohenSutherlandStep(&drawer, &points, &auxPoints, xMin, yMin, xMax, yMax);
+                currentStep = LiangBarksy(&drawer, &points, &auxPoints, xMin, yMin, xMax, yMax);
             }
             currentStep.next();
             
@@ -210,7 +212,7 @@ int main( int argc, char** argv){
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     glutInitWindowPosition(0, 0);
-    glutCreateWindow("Cohen–Sutherland");
+    glutCreateWindow("Liang–Barksy");
     
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
