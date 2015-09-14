@@ -225,7 +225,7 @@ void keyboardCallback(unsigned char key, int x, int y){
     }
     
     if (key == 'n'){
-        
+          
     }
     
     if (key == 'q'){

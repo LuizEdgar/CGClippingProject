@@ -26,11 +26,10 @@ class LiangBarksy {
     double p,q,r;
     double xDelta, yDelta;
     
-    bool finished, rejected;
+    bool finished, rejected, initialized;
     
     int edge;
     int currentStep;
-    int initialized;
     
 public:
     
